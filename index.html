@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Situ Kumar</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@500&family=Alegreya+Sans:wght@400&family=Playfair+Display:ital,wght@0,400;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #c0504d;
+    --brand-dark: #a8423f;
+    --accent: #a8423f;
+    --lime: #a8423f;
+    --sun: #a8423f;
+    --ink: #252222;
+    --muted: #706966;
+    --paper: #fffdfb;
+    --heading: #1b2a41;
+    --inst: "Maiandra GD", "Alegreya Sans", "Gill Sans MT", "Trebuchet MS", sans-serif;
+    --catchy: "Playfair Display", Georgia, "Times New Roman", serif;
+    --name-font: "Footlight MT Light", "Footlight MT", "EB Garamond", Georgia, serif;
+    --body: Perpetua, "EB Garamond", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    --title: "Perpetua Titling MT", "Cinzel", "Trajan Pro", "Times New Roman", serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { font-size: clamp(15px, 1.4vw, 18px); scroll-behavior: smooth; }
+  ::selection { background: rgba(192,80,77,.2); }
+  body {
+    margin: 0;
+    font-family: var(--body);
+    color: var(--ink);
+    background-color: #fffdfb;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .3 0 0 0 0 .3 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  /* ---------- Background pattern: faint neural network + dot grid ---------- */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170' viewBox='0 0 170 170'%3E%3Cg stroke='rgb(192,80,77)' stroke-opacity='.22' stroke-width='1' fill='none'%3E%3Cpath d='M22 32L74 14L126 52L94 100L38 126L22 32M94 100L146 140M126 52L152 22'/%3E%3C/g%3E%3Cg fill='rgb(192,80,77)' fill-opacity='.35'%3E%3Ccircle cx='22' cy='32' r='2.6'/%3E%3Ccircle cx='74' cy='14' r='2.2'/%3E%3Ccircle cx='126' cy='52' r='2.8'/%3E%3Ccircle cx='94' cy='100' r='2.4'/%3E%3Ccircle cx='38' cy='126' r='2.6'/%3E%3Ccircle cx='146' cy='140' r='2.2'/%3E%3Ccircle cx='152' cy='22' r='1.8'/%3E%3C/g%3E%3C/svg%3E"),
+      radial-gradient(rgba(192,80,77,.16) 1px, transparent 1.4px);
+    background-size: 170px 170px, 22px 22px;
+    background-position: 0 0, 11px 11px;
+    /* strongest at the page edges, quiet behind the text */
+    -webkit-mask-image: radial-gradient(ellipse 62% 70% at 50% 45%, transparent 35%, #000 100%);
+            mask-image: radial-gradient(ellipse 62% 70% at 50% 45%, transparent 35%, #000 100%);
+  }
+
+  /* ---------- Navbar ---------- */
+  .navbar {
+    background: var(--brand);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 1px 8px rgba(0,0,0,.12);
+  }
+  .nav-inner {
+    width: 72%;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0;
+    min-height: 59px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .brand {
+    color: #fff;
+    text-decoration: none;
+    font-family: var(--name-font);
+    font-weight: 400;
+    font-size: 1.35rem;
+    letter-spacing: .02em;
+  }
+  .nav-links { display: flex; gap: .3rem; }
+  .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: .9rem;
+    padding: .35rem .75rem;
+    border-bottom: 2px solid transparent;
+    transition: border-color .15s;
+  }
+  .nav-links a:hover,
+  .nav-links a:focus-visible { border-bottom-color: rgba(255,255,255,.7); outline: none; }
+  .nav-links a[aria-current="page"] { border-bottom-color: #fff; }
+  .nav-toggle { position: absolute; opacity: 0; pointer-events: none; }
+  .burger { display: none; cursor: pointer; padding: .6rem .2rem; }
+  .burger span,
+  .burger span::before,
+  .burger span::after {
+    content: "";
+    display: block;
+    width: 1.3rem; height: 2px;
+    background: #fff;
+    position: relative;
+  }
+  .burger span::before { position: absolute; top: -6px; }
+  .burger span::after  { position: absolute; top: 6px; }
+  .nav-toggle:focus-visible + .burger { outline: 2px solid #fff; }
+
+  /* ---------- Page layout ---------- */
+  main {
+    flex: 1 0 auto;
+    width: 72%;
+    max-width: 1060px;
+    margin: 57px auto 0;
+    padding: 0 0 2.5rem;
+    display: grid;
+    grid-template-columns: 30% minmax(0, 1fr);
+    column-gap: 8%;
+    align-items: start;
+    align-content: start;
+  }
+
+  /* ---------- Left column ---------- */
+  .profile {
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.4rem;
+    padding-top: 77px;
+  }
+  .profile h1 {
+    margin: 0;
+    font-family: var(--name-font);
+    font-weight: 400;
+    font-size: clamp(27px, 2.5vw, 35px);
+    letter-spacing: -.02em;
+    color: var(--heading);
+  }
+  .profile .rule {
+    width: 7rem;
+    height: 3px;
+    border: 0;
+    border-radius: 3px;
+    background: var(--brand);
+    margin: 0 0 -.6rem;
+  }
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .5rem;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  /* GitHub "for-the-badge" look: dark label | coloured message */
+  .badge {
+    display: inline-flex;
+    height: 1.75rem;
+    font-family: Verdana, "DejaVu Sans", Geneva, sans-serif;
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: #fff;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .badge:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,.25); }
+  .badge .k, .badge .v { display: flex; align-items: center; padding: 0 .7rem; white-space: nowrap; }
+  .badge .k { background: #444d56; }
+  .badge .v { background: var(--c); }
+
+  .contact {
+    display: flex;
+    gap: .7rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .contact a {
+    display: grid;
+    place-items: center;
+    width: 2.1rem; height: 2.1rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--c, var(--brand));
+    color: var(--c, var(--brand));
+    background: #fff;
+    transition: background .15s, color .15s;
+  }
+  .contact a:hover,
+  .contact a:focus-visible { background: var(--c, var(--brand)); color: #fff; outline: none; }
+  .contact svg { width: 1.05rem; height: 1.05rem; display: block; fill: currentColor; }
+
+  /* ---------- Right column ---------- */
+  .content p {
+    margin: 0 0 1.2rem;
+    font-size: 1rem;
+    line-height: 1.85;
+    letter-spacing: .018em;
+    text-align: justify;
+  }
+  .hl { color: var(--brand); font-weight: 700; }
+  .hl.sun { color: var(--sun); }
+  .welcome {
+    margin: 0 0 1.4rem;
+    font-family: var(--title);
+    font-weight: 400;
+    font-size: 1.05rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--heading);
+  }
+  .content p a { color: #d99694; text-decoration: none; transition: color .15s; }
+  .content p a:hover, .content p a:focus-visible { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+  .edu-title {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    margin: 1.1rem 0 .8rem;
+    font-family: var(--title);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-weight: 500;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    color: var(--heading);
+  }
+  .edu-title svg { width: 1.4rem; height: 1.4rem; fill: currentColor; flex: none; }
+  .edu-title::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    border-radius: 2px;
+    background: rgba(192,80,77,.3);
+  }
+  /* Academic Credential: open timeline with focus-on-hover */
+  .cred-list {
+    position: relative;
+    display: grid;
+    gap: 1.7rem;
+    margin: .4rem 0 0 .4rem;
+    padding-left: 1.7rem;
+    border-left: 1px solid rgba(192,80,77,.4);
+  }
+  .cred {
+    position: relative;
+    transition: opacity .25s, transform .25s;
+  }
+  .cred::before {
+    content: "";
+    position: absolute;
+    left: calc(-1.7rem - 5px);
+    top: .4rem;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--brand);
+    border: 2px solid var(--brand);
+    box-shadow: 0 0 0 4px rgba(192,80,77,.18);
+    transition: box-shadow .25s;
+  }
+  .cred:hover { transform: translateX(4px); }
+  .cred:hover::before { box-shadow: 0 0 0 6px rgba(192,80,77,.25); }
+  .cred-list:hover .cred:not(:hover) { opacity: .4; }
+  .cred-head {
+    margin: 0 0 .25rem;
+    font-family: var(--title);
+    font-weight: 400;
+    font-size: .76rem;
+    letter-spacing: .12em;
+    line-height: 1.6;
+    text-transform: uppercase;
+    color: var(--brand);
+  }
+  .cred-text { margin: 0; font-size: .98rem; line-height: 1.7; letter-spacing: 0; text-align: left; color: #6a625f; }
+  .cred-inst {
+    font-family: var(--inst);
+    font-weight: 400;
+    font-size: 1.05rem;
+    line-height: 1.4;
+    color: var(--heading);
+    text-decoration: none;
+  }
+  a.cred-inst {
+    padding-bottom: .1rem;
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
+    transition: background-size .3s, color .2s;
+  }
+  a.cred-inst::after { content: ""; position: absolute; inset: 0; }
+  a.cred-inst:hover, a.cred-inst:focus-visible { color: var(--brand); background-size: 100% 2px; outline: none; }
+  .cred-inst .ext { display: inline-block; font-size: .75em; transition: transform .25s; }
+  .cred:hover .ext { transform: translate(3px, -3px); }
+  .cred-year {
+    display: inline-block;
+    margin-top: .2rem;
+    font-family: var(--catchy);
+    font-style: italic;
+    font-size: .95rem;
+    letter-spacing: .03em;
+    color: var(--brand);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cred, .cred::before, a.cred-inst, .cred-inst .ext { transition: none; }
+    .cred:hover { transform: none; }
+  }
+
+  /* Thought section (compact) and end mark */
+  .edu-title.gap { margin-top: 2.2rem; }
+  .thought {
+    padding: .85rem 1.15rem .9rem;
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(192,80,77,.22);
+    border-top: 3px solid var(--brand);
+    border-radius: .8rem;
+    box-shadow: 0 4px 14px rgba(192,80,77,.08);
+  }
+  .content p.thought-sub {
+    margin: 0 0 .4rem;
+    font-family: var(--inst);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.02rem;
+    line-height: 1.5;
+    letter-spacing: 0;
+    text-align: left;
+    color: var(--heading);
+  }
+  .content p.thought-text {
+    margin: 0;
+    font-size: .95rem;
+    line-height: 1.65;
+    letter-spacing: .01em;
+    text-align: left;
+    color: #5b5452;
+  }
+  .thought-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .5rem 1rem;
+    margin-top: .8rem;
+  }
+  .thought-label {
+    font-family: var(--title);
+    font-size: .74rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--brand);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    padding: .4rem 1.1rem;
+    border: 1.5px solid var(--brand);
+    border-radius: 999px;
+    background: var(--brand);
+    color: #fff;
+    font-family: var(--inst);
+    font-size: .9rem;
+    text-decoration: none;
+    transition: background .2s, border-color .2s, transform .2s;
+  }
+  .btn:hover, .btn:focus-visible { background: var(--brand-dark); border-color: var(--brand-dark); outline: none; transform: translateY(-1px); }
+  .btn .arr { display: inline-block; transition: transform .2s; }
+  .btn:hover .arr { transform: translate(3px, -3px); }
+
+  /* End mark: plain line, same colour as the rule after "Academic Credential" */
+  .the-end {
+    height: 2px;
+    margin: 2.6rem 0 .6rem;
+    border-radius: 2px;
+    background: rgba(192,80,77,.3);
+  }
+  @media (prefers-reduced-motion: reduce) { .btn, .btn .arr { transition: none; } .btn:hover { transform: none; } }
+
+  /* ---------- Footer ---------- */
+  footer {
+    background: rgba(192,80,77,.08);
+    color: var(--muted);
+    font-size: .78rem;
+  }
+  .footer-inner {
+    width: 72%;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: .75rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .3rem 1.5rem;
+  }
+  footer p { margin: 0; line-height: 1.7; }
+  footer strong { font-weight: 400; color: var(--accent); }
+  .archive-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .05rem .7rem;
+    border: 1px solid var(--brand);
+    border-radius: 999px;
+    color: var(--brand);
+    font-size: .74rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .2s, color .2s;
+  }
+  .archive-link:hover,
+  .archive-link:focus-visible { background: var(--brand); color: #fff; outline: none; }
+
+  @media (min-width: 1500px) { main, .nav-inner, .footer-inner { width: 74%; } }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 800px) {
+    .nav-inner { width: 92%; }
+    main { width: 87%; margin-top: 34px; grid-template-columns: 1fr; row-gap: 30px; }
+    .profile { padding-top: 0; gap: 1.2rem; }
+    .footer-inner { width: 87%; flex-direction: column; text-align: center; gap: .3rem; padding: .7rem 0; }
+    .burger { display: block; }
+    .nav-links {
+      display: none;
+      flex-basis: 100%;
+      flex-direction: column;
+      gap: 0;
+      padding-bottom: .5rem;
+    }
+    .nav-links a { padding: .6rem .2rem; border-bottom: 0; border-left: 2px solid transparent; }
+    .nav-links a[aria-current="page"] { border-left-color: #fff; padding-left: .6rem; }
+    .nav-toggle:checked ~ .nav-links { display: flex; }
+  }
+</style>
+</head>
+<body id="top">
+
+<header class="navbar">
+  <div class="nav-inner">
+    <a class="brand" href="#">Situ Kumar</a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true" tabindex="-1">
+    <label for="nav-toggle" class="burger" aria-label="Toggle navigation"><span></span></label>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#" aria-current="page">Home</a>
+      <a href="#">Experience</a>
+      <a href="#">Projects</a>
+      <a href="#">Publication</a>
+      <a href="#">Blog</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <aside class="profile">
+    <h1>Situ Kumar</h1>
+    <hr class="rule">
+    <ul class="skills" aria-label="Skills">
+      <li class="badge" style="--c:#3776AB"><span class="k">Lang</span><span class="v">Python</span></li>
+      <li class="badge" style="--c:#013243"><span class="k">Data</span><span class="v">NumPy</span></li>
+      <li class="badge" style="--c:#150458"><span class="k">Data</span><span class="v">Pandas</span></li>
+      <li class="badge" style="--c:#F7931E"><span class="k">ML</span><span class="v">scikit-learn</span></li>
+      <li class="badge" style="--c:#11557C"><span class="k">Viz</span><span class="v">Matplotlib</span></li>
+      <li class="badge" style="--c:#FF6F00"><span class="k">DL</span><span class="v">TensorFlow</span></li>
+      <li class="badge" style="--c:#D00000"><span class="k">DL</span><span class="v">Keras</span></li>
+      <li class="badge" style="--c:#EE4C2C"><span class="k">DL</span><span class="v">PyTorch</span></li>
+      <li class="badge" style="--c:#5C3EE8"><span class="k">Vision</span><span class="v">OpenCV</span></li>
+      <li class="badge" style="--c:#F37626"><span class="k">Tool</span><span class="v">Jupyter</span></li>
+      <li class="badge" style="--c:#F05032"><span class="k">Tool</span><span class="v">Git</span></li>
+      <li class="badge" style="--c:#181717"><span class="k">Tool</span><span class="v">GitHub</span></li>
+    </ul>
+    <ul class="contact" aria-label="Contact links">
+      <li><a href="mailto:kumar.situ.003@outlook.com" aria-label="Email" title="Email">
+        <svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v.3l-10 6.3L2 6.3V6a1 1 0 0 1 1-1zm-1 4.1 10 6.3 10-6.3V18a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/></svg>
+      </a></li>
+      <li><a href="https://www.linkedin.com/in/situ-kumar-162087325/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+      </a></li>
+      <li><a href="https://github.com/situ0214" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+      </a></li>
+      <li><a href="https://orcid.org/" target="_blank" rel="noopener noreferrer" aria-label="ORCID" title="ORCID">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM8.1 6.2a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8zM7.3 9h1.6v7.4H7.3zm3 0h2.8c2.4 0 3.8 1.6 3.8 3.7s-1.5 3.7-3.8 3.7h-2.8zm1.6 1.4V15h1.1c1.4 0 2.2-.9 2.2-2.3s-.8-2.3-2.2-2.3z"/></svg>
+      </a></li>
+      <li><a href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar" title="Google Scholar">
+        <svg viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.9V17h2V9zM5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.8z"/></svg>
+      </a></li>
+    </ul>
+  </aside>
+
+  <section class="content">
+    <h2 class="welcome">Welcome to my little space on the internet.</h2>
+    <p>I am an engineering graduate from <a href="https://ggu.ac.in/department/ece" target="_blank" rel="noopener noreferrer">Department of Electronics and Communication Engineering</a> at <a href="https://www.ggu.ac.in/" target="_blank" rel="noopener noreferrer">GGV Bilaspur</a>, with a keen interest in technology, problem-solving, and scientific exploration.</p>
+    <p>I am currently developing my expertise in <a href="#">Machine Learning (ML)</a> and <a href="#">Deep Learning (DL)</a>, with a particular interest in their applications in healthcare. My curiosity about genomics and neuroscience has led me to explore how ML techniques applied to blood-based gene-expression data can help identify patterns associated with the early detection of neurodegenerative diseases. I believe that practical application is fundamental to understanding a concept, and I strive to put this into practice through my explorations.</p>
+    <p>With a keen interest in scientific research, I had the opportunity to undertake a summer research internship at the <a href="https://www.iitp.ac.in/" target="_blank" rel="noopener noreferrer">Department of Mathematics and Computing</a>, <a href="https://www.iitp.ac.in/" target="_blank" rel="noopener noreferrer">IIT Patna</a>, where I gained valuable exposure to the research process and academic environment. I am keen to build upon this experience by exploring new research directions, learning from diverse perspectives, and contributing to meaningful research.</p>
+
+    <h2 class="edu-title"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1 9l11 6 9-4.9V17h2V9zM5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.8z"/></svg>Academic Credential</h2>
+
+    <div class="cred-list">
+      <article class="cred now">
+        <h3 class="cred-head">B-tech - Electronics and Communication Engineering</h3>
+        <p class="cred-text"><a class="cred-inst" href="https://ggu.ac.in/" target="_blank" rel="noopener noreferrer">Guru Ghasidas Vishwavidyalaya, Bilaspur <span class="ext" aria-hidden="true">&nearr;</span></a><br>(A Central University)<br><span class="cred-year">2024-28</span></p>
+      </article>
+      <article class="cred">
+        <h3 class="cred-head">High Schooling</h3>
+        <p class="cred-text"><a class="cred-inst" href="https://srpcollege.blogspot.com/2014/01/blog-post_1257.html" target="_blank" rel="noopener noreferrer">S.R.P College Patna <span class="ext" aria-hidden="true">&nearr;</span></a><br>BSEB, Patna</p>
+      </article>
+      <article class="cred">
+        <h3 class="cred-head">Schooling</h3>
+        <p class="cred-text"><a class="cred-inst" href="https://sjacademybiharsharif.com/" target="_blank" rel="noopener noreferrer">S.T Joseph Academy, Biharsharif, Nalanda <span class="ext" aria-hidden="true">&nearr;</span></a><br>CBSE, New Delhi</p>
+      </article>
+    </div>
+
+    <h2 class="edu-title gap" id="thought-title"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>A Thought to Share?</h2>
+
+    <section class="thought" aria-labelledby="thought-title">
+      <p class="thought-sub">Every perspective adds a new dimension to an idea. What's yours?</p>
+      <p class="thought-text">Have a suggestion, a different perspective, or simply an interesting thought? I'd be happy to hear from you.</p>
+      <div class="thought-row">
+        <span class="thought-label">Your thoughts</span>
+        <a class="btn" href="mailto:kumar.situ.003@outlook.com?subject=A%20thought%20to%20share">Write to me <span class="arr" aria-hidden="true">&nearr;</span></a>
+      </div>
+    </section>
+
+    <div class="the-end" role="separator" aria-label="End of page"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p>&copy; 2026 <strong>Situ Kumar</strong>. All rights reserved.</p>
+    <a class="archive-link" href="archives.html">From the Archives <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</footer>
+
+</body>
+</html>
