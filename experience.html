@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Internships and experience of Situ Kumar.">
+<meta name="theme-color" content="#c0504d">
+<title>Experience | Situ Kumar</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400&family=Alegreya+Sans:wght@400&family=Playfair+Display:ital,wght@0,400;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #c0504d;
+    --brand-dark: #a8423f;
+    --accent: #a8423f;
+    --ink: #252222;
+    --muted: #706966;
+    --paper: #fffdfb;
+    --heading: #1b2a41;
+    --humanist: "Maiandra GD", "Alegreya Sans", "Gill Sans MT", "Trebuchet MS", sans-serif;
+    --display: "Playfair Display", Georgia, "Times New Roman", serif;
+    --name-font: "Footlight MT Light", "Footlight MT", "EB Garamond", Georgia, serif;
+    --body: Perpetua, "EB Garamond", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    --title: "Perpetua Titling MT", "Cinzel", "Trajan Pro", "Times New Roman", serif;
+  }
+ 
+  *, *::before, *::after { box-sizing: border-box; }
+ 
+  html { font-size: clamp(15px, 1.4vw, 18px); scroll-behavior: smooth; }
+ 
+  ::selection { background: rgba(192,80,77,.2); }
+ 
+  body {
+    margin: 0;
+    font-family: var(--body);
+    color: var(--ink);
+    background-color: var(--paper);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .3 0 0 0 0 .3 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+ 
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170' viewBox='0 0 170 170'%3E%3Cg stroke='rgb(192,80,77)' stroke-opacity='.22' stroke-width='1' fill='none'%3E%3Cpath d='M22 32L74 14L126 52L94 100L38 126L22 32M94 100L146 140M126 52L152 22'/%3E%3C/g%3E%3Cg fill='rgb(192,80,77)' fill-opacity='.35'%3E%3Ccircle cx='22' cy='32' r='2.6'/%3E%3Ccircle cx='74' cy='14' r='2.2'/%3E%3Ccircle cx='126' cy='52' r='2.8'/%3E%3Ccircle cx='94' cy='100' r='2.4'/%3E%3Ccircle cx='38' cy='126' r='2.6'/%3E%3Ccircle cx='146' cy='140' r='2.2'/%3E%3Ccircle cx='152' cy='22' r='1.8'/%3E%3C/g%3E%3C/svg%3E"),
+      radial-gradient(rgba(192,80,77,.16) 1px, transparent 1.4px);
+    background-size: 170px 170px, 22px 22px;
+    background-position: 0 0, 11px 11px;
+    -webkit-mask-image: radial-gradient(ellipse 62% 70% at 50% 45%, transparent 35%, #000 100%);
+            mask-image: radial-gradient(ellipse 62% 70% at 50% 45%, transparent 35%, #000 100%);
+  }
+ 
+  .navbar {
+    background: var(--brand);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 1px 8px rgba(0,0,0,.12);
+  }
+ 
+  .nav-inner {
+    width: 72%;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0;
+    min-height: 59px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+ 
+  .brand {
+    color: #fff;
+    text-decoration: none;
+    font-family: var(--name-font);
+    font-weight: 400;
+    font-size: 1.35rem;
+    letter-spacing: .02em;
+  }
+ 
+  .nav-links { display: flex; gap: .3rem; }
+ 
+  .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: .9rem;
+    padding: .35rem .75rem;
+    border-bottom: 2px solid transparent;
+    transition: border-color .15s;
+  }
+ 
+  .nav-links a:hover,
+  .nav-links a:focus-visible { border-bottom-color: rgba(255,255,255,.7); outline: none; }
+ 
+  .nav-links a[aria-current="page"] { border-bottom-color: #fff; }
+ 
+  .nav-toggle { position: absolute; opacity: 0; pointer-events: none; }
+ 
+  .burger { display: none; cursor: pointer; padding: .6rem .2rem; }
+ 
+  .burger span,
+  .burger span::before,
+  .burger span::after {
+    content: "";
+    display: block;
+    width: 1.3rem; height: 2px;
+    background: #fff;
+    position: relative;
+  }
+ 
+  .burger span::before { position: absolute; top: -6px; }
+ 
+  .burger span::after  { position: absolute; top: 6px; }
+ 
+  .nav-toggle:focus-visible + .burger { outline: 2px solid #fff; }
+ 
+  main {
+    flex: 1 0 auto;
+    width: 72%;
+    max-width: 1060px;
+    margin: 57px auto 0;
+    padding: 0 0 2.5rem;
+    display: grid;
+    grid-template-columns: 30% minmax(0, 1fr);
+    column-gap: 8%;
+    align-items: start;
+    align-content: start;
+  }
+ 
+  .profile {
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.4rem;
+    padding-top: 77px;
+  }
+ 
+  .profile h1 {
+    margin: 0;
+    font-family: var(--name-font);
+    font-weight: 400;
+    font-size: clamp(27px, 2.5vw, 35px);
+    letter-spacing: -.02em;
+    color: var(--heading);
+  }
+ 
+  .profile .rule {
+    width: 7rem;
+    height: 3px;
+    border: 0;
+    border-radius: 3px;
+    background: var(--brand);
+    margin: 0 0 -.6rem;
+  }
+ 
+  .content p {
+    margin: 0 0 1.2rem;
+    font-size: 1rem;
+    line-height: 1.85;
+    letter-spacing: .018em;
+    text-align: justify;
+  }
+ 
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    margin: 1.1rem 0 .8rem;
+    font-family: var(--title);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.2;
+    color: #4a5670;
+  }
+ 
+  .section-title svg { width: 1.4rem; height: 1.4rem; fill: currentColor; flex: none; }
+ 
+  .section-title::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    border-radius: 2px;
+    background: rgba(192,80,77,.3);
+  }
+ 
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    padding: .4rem 1.1rem;
+    border: 1.5px solid var(--brand);
+    border-radius: 999px;
+    background: var(--brand);
+    color: #fff;
+    font-family: var(--humanist);
+    font-size: .9rem;
+    text-decoration: none;
+    transition: background .2s, border-color .2s, transform .2s;
+  }
+ 
+  .btn:hover, .btn:focus-visible { background: var(--brand-dark); border-color: var(--brand-dark); outline: none; transform: translateY(-1px); }
+ 
+  .btn .arr { display: inline-block; transition: transform .2s; }
+ 
+  .btn:hover .arr { transform: translate(3px, -3px); }
+ 
+  .page-end {
+    height: 2px;
+    margin: 2.6rem 0 .6rem;
+    border-radius: 2px;
+    background: rgba(192,80,77,.3);
+  }
+ 
+  footer {
+    background: rgba(192,80,77,.08);
+    color: var(--muted);
+    font-size: .78rem;
+  }
+ 
+  .footer-inner {
+    width: 72%;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: .75rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .3rem 1.5rem;
+  }
+ 
+  footer p { margin: 0; line-height: 1.7; }
+ 
+  footer strong { font-weight: 400; color: var(--accent); }
+ 
+  .archive-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .05rem .7rem;
+    border: 1px solid var(--brand);
+    border-radius: 999px;
+    color: var(--brand);
+    font-size: .74rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .2s, color .2s;
+  }
+ 
+  .archive-link:hover,
+  .archive-link:focus-visible { background: var(--brand); color: #fff; outline: none; }
+ 
+    .xp-list { display: grid; gap: 1rem; }
+  .xp {
+    padding: .85rem 1.15rem .9rem;
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(192,80,77,.22);
+    border-top: 3px solid var(--brand);
+    border-radius: .8rem;
+    box-shadow: 0 4px 14px rgba(192,80,77,.08);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .xp:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(192,80,77,.16); }
+  .xp-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: .1rem 1rem;
+    margin-bottom: .3rem;
+  }
+  .xp-date {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: .9rem;
+    letter-spacing: .03em;
+    color: var(--brand);
+    white-space: nowrap;
+  }
+  .xp-role {
+    margin: 0;
+    font-family: var(--title);
+    font-weight: 400;
+    font-size: .76rem;
+    letter-spacing: .12em;
+    line-height: 1.6;
+    text-transform: uppercase;
+    color: var(--brand);
+  }
+  .content p.xp-org {
+    margin: 0 0 .4rem;
+    font-family: var(--humanist);
+    font-size: 1.05rem;
+    line-height: 1.45;
+    letter-spacing: 0;
+    text-align: left;
+  }
+  .xp-org a { color: var(--heading); text-decoration: none; }
+  .xp-org a:hover, .xp-org a:focus-visible { color: var(--brand); text-decoration: underline; text-underline-offset: 4px; outline: none; }
+  .xp-org .ext { display: inline-block; font-size: .75em; }
+  .content p.xp-text {
+    margin: 0;
+    font-size: .95rem;
+    line-height: 1.65;
+    letter-spacing: .01em;
+    text-align: justify;
+    color: #5b5452;
+  }
+  .xp-foot { display: flex; justify-content: flex-end; margin-top: .8rem; }
+ 
+  .section-title.spaced { margin-top: 2.2rem; }
+  .xp-soon { text-align: center; }
+  .soon-icon { display: inline-grid; place-items: center; width: 2.6rem; height: 2.6rem; margin-bottom: .35rem; border: 1px solid rgba(192,80,77,.35); border-radius: 50%; color: var(--brand); }
+  .soon-icon svg { width: 1.2rem; height: 1.2rem; }
+  .content .xp-soon p.xp-text { margin-bottom: .5rem; text-align: center; }
+  .dots i {
+    display: inline-block;
+    width: .35rem; height: .35rem;
+    margin: 0 .15rem;
+    border-radius: 50%;
+    background: var(--brand);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  .dots i:nth-child(2) { animation-delay: .2s; }
+  .dots i:nth-child(3) { animation-delay: .4s; }
+  @keyframes pulse { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+  .xp-soon .xp-foot { justify-content: center; margin-top: .9rem; }
+ 
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .xp, .btn, .btn .arr { transition: none; }
+    .xp:hover, .btn:hover { transform: none; }
+    .dots i { animation: none; opacity: .6; }
+  }
+ 
+  @media (min-width: 1500px) { main, .nav-inner, .footer-inner { width: 74%; } }
+ 
+  @media (max-width: 800px) {
+    .nav-inner { width: 92%; }
+    main { width: 87%; margin-top: 34px; grid-template-columns: 1fr; row-gap: 30px; }
+    .profile { padding-top: 0; gap: 1.2rem; }
+    .footer-inner { width: 87%; flex-direction: column; text-align: center; gap: .3rem; padding: .7rem 0; }
+    .burger { display: block; }
+    .nav-links {
+      display: none;
+      flex-basis: 100%;
+      flex-direction: column;
+      gap: 0;
+      padding-bottom: .5rem;
+    }
+    .nav-links a { padding: .6rem .2rem; border-bottom: 0; border-left: 2px solid transparent; }
+    .nav-links a[aria-current="page"] { border-left-color: #fff; padding-left: .6rem; }
+    .nav-toggle:checked ~ .nav-links { display: flex; }
+  }
+</style>
+</head>
+<body>
+ 
+<header class="navbar">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">Situ Kumar</a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true" tabindex="-1">
+    <label for="nav-toggle" class="burger" aria-label="Toggle navigation"><span></span></label>
+    <nav class="nav-links" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="experience.html" aria-current="page">Experience</a>
+      <a href="projects.html">Projects</a>
+      <a href="publication.html">Publication</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+  </div>
+</header>
+ 
+<main>
+  <aside class="profile">
+    <h1>Experience</h1>
+    <hr class="rule">
+  </aside>
+ 
+  <div class="content">
+    <h2 class="section-title"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M9 3a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v3h20V8a2 2 0 0 0-2-2h-3V5a2 2 0 0 0-2-2zm0 2h6v1H9zM2 13v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5h-8v1.5h-4V13z"/></svg>Internship</h2>
+ 
+    <div class="xp-list">
+      <article class="xp">
+        <div class="xp-top">
+          <h3 class="xp-role">Summer Research Internship</h3>
+          <span class="xp-date">May&ndash;July 2026</span>
+        </div>
+        <p class="xp-org"><a href="https://www.iitp.ac.in/" target="_blank" rel="noopener noreferrer">Department of Mathematics and Computing, IIT Patna <span class="ext" aria-hidden="true">&nearr;</span></a></p>
+        <p class="xp-text">Worked on research in Lightweight Post-Quantum Cryptography, focusing on the design of an RLWE-based authentication protocol for Smart Grid applications. The internship involved studying post-quantum cryptographic primitives, designing a secure mutual authentication and session key establishment mechanism, analyzing the protocol's security properties, and documenting a lightweight framework for secure communication in quantum-resistant environments.</p>
+        <div class="xp-foot">
+          <a class="btn" href="https://www.linkedin.com/in/situ-kumar-162087325/overlay/Position/2963002456/treasury/?profileId=ACoAAFIPCBoBig5tw5IAjKE6S8jyd5l9KlSJBCw" target="_blank" rel="noopener noreferrer">View certificate <span class="arr" aria-hidden="true">&nearr;</span></a>
+        </div>
+      </article>
+    </div>
+ 
+    <h2 class="section-title spaced"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2a6 6 0 0 0-3.5 10.9L7 22l5-2.5 5 2.5-1.5-9.1A6 6 0 0 0 12 2zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/></svg>Certification</h2>
+ 
+    <div class="xp-list">
+      <article class="xp xp-soon">
+        <span class="soon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12M6 22h12M7 2v4.2a4 4 0 0 0 1.2 2.8L12 12l-3.8 3a4 4 0 0 0-1.2 2.8V22M17 2v4.2a4 4 0 0 1-1.2 2.8L12 12l3.8 3a4 4 0 0 1 1.2 2.8V22"/></svg></span>
+        <h3 class="xp-role">Coming soon</h3>
+        <p class="xp-text">Details will be updated soon.</p>
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="xp-foot">
+          <a class="btn" href="https://www.linkedin.com/in/situ-kumar-162087325/overlay/Position/2963002456/treasury/?profileId=ACoAAFIPCBoBig5tw5IAjKE6S8jyd5l9KlSJBCw" target="_blank" rel="noopener noreferrer">View certificate <span class="arr" aria-hidden="true">&nearr;</span></a>
+        </div>
+      </article>
+    </div>
+ 
+    <div class="page-end" role="separator"></div>
+  </div>
+</main>
+ 
+<footer>
+  <div class="footer-inner">
+    <p>&copy; 2026 <strong>Situ Kumar</strong>. All rights reserved.</p>
+    <a class="archive-link" href="archives.html">From the Archives <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</footer>
+ 
+</body>
+</html>
+ 
