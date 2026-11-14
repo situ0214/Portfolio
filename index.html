@@ -4,11 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Situ Kumar, engineering graduate with an interest in machine learning, deep learning and healthcare.">
-<meta name="theme-color" content="#c0504d">
+<meta name="theme-color" content="#f6f3ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12151b" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
 <title>Situ Kumar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Situ Kumar">
+<meta property="og:description" content="Situ Kumar, engineering graduate with an interest in machine learning, deep learning and healthcare.">
+<meta property="og:url" content="https://situ0214.github.io/Portfolio/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232d4b85'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' text-anchor='middle' fill='%23f6f3ec'%3ESK%3C/text%3E%3C/svg%3E">
+<script>
+(function () {
+  var root = document.documentElement, theme = 'light';
+  root.classList.add('js');
+  try { theme = localStorage.getItem('theme') || 'light'; } catch (e) {}
+  root.setAttribute('data-theme', theme);
+})();
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Person", "name": "Situ Kumar", "url": "https://situ0214.github.io/Portfolio/", "email": "mailto:kumar.situ.003@outlook.com", "sameAs": ["https://www.linkedin.com/in/situ-kumar-162087325/", "https://github.com/situ0214"]}
+</script>
 <style>
 :root {
   --paper: #f6f3ec;
@@ -16,18 +34,43 @@
   --text: #2a2720;
   --muted: #7b7569;
   --accent: #2d4b85;
+  --paper-alt: #eee9de;
+  --panel: #fff;
+  --header-bg: rgba(246, 243, 236, .85);
+  --hover: rgba(70, 58, 34, .06);
+  --glow-a: rgba(45, 75, 133, .11);
+  --glow-b: rgba(190, 150, 90, .16);
+  color-scheme: light;
   --link: #7b94c9;
   --line: rgba(70, 58, 34, .17);
   --name-font: "Footlight MT Light", "Footlight MT", "EB Garamond", Georgia, serif;
   --body: Perpetua, "EB Garamond", "Palatino Linotype", "Book Antiqua", Georgia, serif;
   --badge-font: "Segoe UI", system-ui, -apple-system, sans-serif;
   --wrap: 72rem;
+  --edge: clamp(1rem, 2.6vw, 1.9rem);
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
   --ease: .2s ease;
 }
- 
+
+:root[data-theme="dark"] {
+  --paper: #12151b;
+  --paper-alt: #171b23;
+  --ink: #f3efe7;
+  --text: #d8d3c8;
+  --muted: #9b968b;
+  --accent: #8fb0f0;
+  --link: #8fb0f0;
+  --line: rgba(236, 226, 206, .14);
+  --panel: #1b2029;
+  --header-bg: rgba(18, 21, 27, .82);
+  --hover: rgba(236, 226, 206, .08);
+  --glow-a: rgba(143, 176, 240, .2);
+  --glow-b: rgba(214, 172, 104, .13);
+  color-scheme: dark;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
-html { font-size: 16px; scroll-behavior: smooth; scroll-padding-top: 5rem; }
+html { font-size: 16px; scroll-behavior: smooth; scroll-padding-top: 4.05rem; }
 body {
   margin: 0;
   min-height: 100vh;
@@ -44,17 +87,23 @@ body {
 ::selection { background: rgba(45, 75, 133, .18); }
 a { color: inherit; }
 a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
- 
+
 /* header */
 .navbar {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(246, 243, 236, .95);
-  -webkit-backdrop-filter: blur(8px);
-          backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--line);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background .35s ease, border-color .35s ease;
 }
+.navbar.scrolled, .navbar.menu-open {
+  background: var(--header-bg);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  border-bottom-color: var(--line);
+}
+.navbar.menu-open { background: var(--paper); }
 .nav-inner {
   width: min(100% - 2 * var(--gutter), var(--wrap));
   min-height: 4rem;
@@ -73,7 +122,15 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
   text-decoration: none;
   white-space: nowrap;
 }
-.nav-links { display: flex; flex: 1; gap: 1.75rem; }
+.nav-links { position: relative; display: flex; gap: 1.75rem; }
+.nav-indicator {
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 0; height: 2px;
+  background: var(--accent);
+  pointer-events: none;
+  transition: transform .5s cubic-bezier(.2, .8, .2, 1), width .5s cubic-bezier(.2, .8, .2, 1);
+}
 .nav-links a {
   position: relative;
   padding: .4rem 0;
@@ -84,21 +141,10 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
   text-decoration: none;
   transition: color var(--ease);
 }
-.nav-links a::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--ease);
-}
-.nav-links a:hover, .nav-links a:focus-visible, .nav-links a[aria-current="page"] { color: var(--ink); outline: none; }
-.nav-links a:hover::after, .nav-links a:focus-visible::after, .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
- 
+.nav-links a:hover, .nav-links a:focus-visible, .nav-links a[aria-current] { color: var(--ink); outline: none; }
+
 .header-icons { display: flex; align-items: center; gap: .1rem; margin-left: auto; }
-.header-icons a, .header-icons .search-btn, .footer-icons a {
+.header-icons a, .header-icons .search-btn, .header-icons .theme-btn, .footer-icons a {
   display: grid;
   place-items: center;
   width: 2.1rem; height: 2.1rem;
@@ -112,9 +158,10 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 }
 .header-icons a:hover, .header-icons a:focus-visible,
 .header-icons .search-btn:hover, .header-icons .search-btn:focus-visible,
-.footer-icons a:hover, .footer-icons a:focus-visible { color: var(--accent); background: rgba(70, 58, 34, .06); outline: none; }
+.header-icons .theme-btn:hover, .header-icons .theme-btn:focus-visible,
+.footer-icons a:hover, .footer-icons a:focus-visible { color: var(--accent); background: var(--hover); outline: none; }
 .header-icons svg, .footer-icons svg { width: 1.05rem; height: 1.05rem; display: block; fill: currentColor; }
- 
+
 .nav-toggle { position: absolute; opacity: 0; pointer-events: none; }
 .burger { display: none; margin-left: auto; padding: .6rem .2rem; cursor: pointer; }
 .burger span, .burger span::before, .burger span::after {
@@ -127,7 +174,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 .burger span::before { position: absolute; top: -6px; }
 .burger span::after  { position: absolute; top: 6px; }
 .nav-toggle:focus-visible + .burger { outline: 2px solid var(--accent); outline-offset: 2px; }
- 
+
 /* search */
 .search-panel {
   position: absolute;
@@ -135,7 +182,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
   right: max(var(--gutter), calc((100% - var(--wrap)) / 2));
   width: min(24rem, calc(100% - 2rem));
   padding: .75rem;
-  background: #fff;
+  background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 6px;
   box-shadow: 0 10px 28px rgba(40, 32, 15, .12);
@@ -154,14 +201,14 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 .search-panel input:focus { outline: none; border-color: var(--accent); }
 .search-results { max-height: 16rem; margin: .5rem 0 0; padding: 0; overflow: auto; list-style: none; }
 .search-results a { display: block; padding: .5rem .6rem; border-radius: 4px; color: var(--ink); text-decoration: none; }
-.search-results a:hover, .search-results a:focus-visible { background: rgba(45, 75, 133, .07); outline: none; }
+.search-results a:hover, .search-results a:focus-visible { background: var(--hover); outline: none; }
 .search-results span { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
 .search-results strong { display: block; font-size: 1.1rem; font-weight: 400; line-height: 1.35; }
 .search-empty { padding: .5rem .6rem; font-size: 1rem; color: var(--muted); }
- 
+
 /* page */
-main { flex: 1 0 auto; width: min(100% - 2 * var(--gutter), var(--wrap)); margin: 0 auto; }
- 
+main { flex: 1 0 auto; }
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
@@ -173,7 +220,7 @@ main { flex: 1 0 auto; width: min(100% - 2 * var(--gutter), var(--wrap)); margin
 .hero-intro { grid-area: intro; min-width: 0; }
 .thought { grid-area: thought; min-width: 0; align-self: start; }
 .academic { grid-area: academic; min-width: 0; padding-top: calc(1.75rem + 1px); }
- 
+
 .eyebrow {
   margin: 0 0 1.25rem;
   font-size: .8rem;
@@ -191,7 +238,7 @@ main { flex: 1 0 auto; width: min(100% - 2 * var(--gutter), var(--wrap)); margin
   color: var(--ink);
 }
 .hero h1 em { display: block; font-style: italic; color: var(--accent); }
- 
+
 /* skill badges */
 .skills { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1.75rem 0 0; padding: 0; list-style: none; }
 .badge {
@@ -211,7 +258,7 @@ main { flex: 1 0 auto; width: min(100% - 2 * var(--gutter), var(--wrap)); margin
 .badge .k { background: #444d56; }
 .badge .v { background: var(--c); }
 .divider-line { height: 1px; margin: 0 0 1.75rem; border: 0; background: var(--line); }
- 
+
 .hero-intro p, .more p {
   margin: 0;
   font-family: var(--body);
@@ -232,7 +279,7 @@ main { flex: 1 0 auto; width: min(100% - 2 * var(--gutter), var(--wrap)); margin
   transition: color var(--ease), text-decoration-color var(--ease);
 }
 .hero-intro p a:hover, .hero-intro p a:focus-visible, .more p a:hover, .more p a:focus-visible { color: var(--accent); text-decoration-color: currentColor; }
- 
+
 .side-title {
   margin: 0 0 .25rem;
   font-family: var(--body);
@@ -242,7 +289,7 @@ main { flex: 1 0 auto; width: min(100% - 2 * var(--gutter), var(--wrap)); margin
   letter-spacing: -.005em;
   color: var(--ink);
 }
- 
+
 /* academic credential: a plain ruled list */
 .cred-list { margin: 0; padding: 0; }
 .cred { position: relative; padding: 1.1rem 0; border-top: 1px solid var(--line); }
@@ -269,7 +316,7 @@ a.cred-inst::after { content: ""; position: absolute; inset: 0; }
 a.cred-inst:hover, a.cred-inst:focus-visible { color: var(--accent); outline: none; }
 .cred-inst .ext { display: inline-block; font-size: .65em; color: var(--accent); }
 .cred-year { display: inline-block; margin-top: .1rem; letter-spacing: .03em; color: var(--text); }
- 
+
 /* a thought to share: deliberately small */
 .thought .side-title { font-size: 1.2rem; }
 .thought-sub { margin: .6rem 0 .35rem; font-size: 1rem; font-style: normal; line-height: 1.45; color: var(--ink); }
@@ -286,22 +333,24 @@ a.cred-inst:hover, a.cred-inst:focus-visible { color: var(--accent); outline: no
   font-size: .8rem;
   color: var(--ink);
   text-decoration: none;
-  transition: background var(--ease), color var(--ease);
+  background: linear-gradient(var(--ink), var(--ink)) no-repeat left center / 0% 100%;
+  transition: background-size .4s cubic-bezier(.2, .7, .2, 1), color .4s ease, transform .25s ease-out;
 }
-.btn:hover, .btn:focus-visible { background: var(--ink); color: var(--paper); outline: none; }
+.btn:hover, .btn:focus-visible { background-size: 100% 100%; color: var(--paper); outline: none; }
 .btn .arr { font-size: .8em; }
- 
+
 /* remaining paragraphs */
-.more { padding: clamp(2rem, 5vw, 3rem) 0 clamp(3.5rem, 7vw, 5rem); border-top: 1px solid var(--line); }
+.more { padding: clamp(2rem, 5vw, 3rem) 0 clamp(1.5rem, 3vw, 2rem); border-top: 1px solid var(--line); }
 .more p { max-width: 46rem; margin-bottom: 1.2rem; }
 .more p:last-child { margin-bottom: 0; }
- 
+
 /* footer */
 footer { border-top: 1px solid var(--line); }
 .footer-inner {
   width: min(100% - 2 * var(--gutter), var(--wrap));
+  min-height: 4rem;
   margin: 0 auto;
-  padding: 1.25rem 0;
+  padding: .5rem 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -313,7 +362,182 @@ footer { border-top: 1px solid var(--line); }
 }
 footer p { margin: 0; }
 .footer-icons { display: flex; align-items: center; gap: .1rem; }
- 
+@media (min-width: 901px) { .footer-icons { margin-right: 4.4rem; } }
+
+[hidden] { display: none !important; }
+.home { width: min(100% - 2 * var(--gutter), var(--wrap)); margin: 0 auto; }
+.page-section { width: min(100% - 2 * var(--gutter), 52rem); margin: 0 auto; padding: clamp(3rem, 7vw, 4.75rem) 0 clamp(1.5rem, 3vw, 2rem); }
+.band { border-top: 1px solid var(--line); }
+.band:first-child { border-top: 0; }
+.band-alt { background: var(--paper-alt); }
+#blog { min-height: calc(100vh - 4rem); }
+
+.section-head { margin-bottom: 1.75rem; }
+.section-head h2 {
+  margin: 0;
+  font-family: var(--name-font);
+  font-size: clamp(2.1rem, 4.6vw, 3rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
+
+.group + .group { margin-top: clamp(2rem, 4vw, 2.75rem); }
+.group-title { margin: 1.75rem 0 .75rem; font-size: 1.45rem; font-weight: 400; line-height: 1.2; letter-spacing: -.005em; color: var(--ink); }
+
+.entry { padding: 1.25rem 0 1.4rem; border-top: 1px solid var(--line); }
+.entry:last-child { border-bottom: 1px solid var(--line); }
+.entry-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .25rem 1rem; }
+.entry-meta + .entry-text { margin-top: .45rem; }
+.entry-label { font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.entry-date { font-size: .95rem; letter-spacing: .03em; color: var(--muted); white-space: nowrap; }
+.entry-title { margin: .4rem 0 .55rem; font-size: 1.3rem; font-weight: 400; line-height: 1.35; color: var(--ink); }
+.entry-title a { color: inherit; text-decoration: none; transition: color var(--ease); }
+.entry-title a:hover, .entry-title a:focus-visible { color: var(--accent); outline: none; }
+.entry-title .ext { display: inline-block; font-size: .65em; color: var(--accent); }
+.entry-text { margin: 0; font-size: 1.05rem; line-height: 1.8; letter-spacing: .015em; text-align: justify; hyphens: auto; -webkit-hyphens: auto; color: var(--text); }
+.entry-shot { margin: 0 0 1rem; overflow: hidden; border: 1px solid var(--line); border-radius: 4px; }
+.entry-shot img { display: block; width: 100%; height: auto; }
+.entry-points { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: .4rem; }
+.entry-points li { position: relative; padding-left: 1.1rem; font-size: 1rem; line-height: 1.65; color: var(--text); }
+.entry-points li::before { content: ""; position: absolute; left: 0; top: .72em; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+.entry-points b { font-weight: 600; color: var(--ink); }
+.entry-tags { list-style: none; display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0 0; padding: 0; }
+.entry-tags li { padding: .1rem .8rem; border: 1px solid var(--line); border-radius: 999px; font-size: .85rem; color: var(--muted); }
+.entry-foot { margin-top: 1rem; }
+.entry-foot .btn { padding: .4rem 1rem; font-size: .88rem; }
+
+.next {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+.next-label { font-size: .8rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.next-name { flex: 1; font-family: var(--name-font); font-size: clamp(1.6rem, 3.4vw, 2.2rem); line-height: 1.1; letter-spacing: -.01em; color: var(--ink); transition: color var(--ease); }
+.next-arrow { margin-left: auto; font-size: 1.5rem; line-height: 1; color: var(--accent); transition: transform var(--ease); }
+.next:hover .next-name, .next:focus-visible .next-name { color: var(--accent); }
+.next:hover .next-arrow, .next:focus-visible .next-arrow { transform: translateY(4px); }
+.next[href="#home"]:hover .next-arrow, .next[href="#home"]:focus-visible .next-arrow { transform: translateY(-4px); }
+.next:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+.pub-empty { margin-top: 0; }
+.pub-empty-label { margin: 0 0 .5rem; font-size: .8rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.pub-empty p:last-child { max-width: 38rem; margin: 0; font-size: 1.1rem; line-height: 1.8; letter-spacing: .015em; color: var(--text); }
+.pub-list { margin-top: 1.75rem; }
+.pub-year { margin: 1.75rem 0 .75rem; font-size: .85rem; font-weight: 400; letter-spacing: .18em; color: var(--muted); }
+.pub { padding: 1.1rem 0 1.25rem; border-top: 1px solid var(--line); }
+.pub-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .75rem; margin-bottom: .45rem; font-size: .85rem; color: var(--muted); }
+.pub-status { padding: .05rem .65rem; border: 1px solid var(--line); border-radius: 999px; font-size: .8rem; color: var(--text); }
+.pub-title { margin: 0 0 .25rem; font-size: 1.2rem; font-weight: 400; line-height: 1.4; color: var(--ink); }
+.pub-authors, .pub-venue { margin: 0; font-size: .95rem; line-height: 1.55; color: var(--muted); }
+.pub-venue em { color: var(--text); }
+.pub-links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+.pub-links a { padding: .1rem .8rem; border: 1px solid var(--line); border-radius: 999px; font-size: .85rem; color: var(--accent); text-decoration: none; transition: background var(--ease); }
+.pub-links a:hover, .pub-links a:focus-visible { background: var(--hover); outline: none; }
+
+/* motion */
+.skip {
+  position: absolute; left: 1rem; top: -4rem; z-index: 30;
+  padding: .5rem 1rem; border-radius: 4px;
+  background: var(--ink); color: var(--paper); text-decoration: none;
+  transition: top .2s ease;
+}
+.skip:focus { top: .75rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+.progress {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 20; height: 2px;
+  background: var(--accent);
+  transform: scaleX(var(--p, 0));
+  transform-origin: left;
+  pointer-events: none;
+}
+
+html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after {
+  transition: background-color .5s ease, color .5s ease, border-color .5s ease, fill .5s ease !important;
+}
+.theme-btn .sun { display: none; }
+:root[data-theme="dark"] .theme-btn .moon { display: none; }
+:root[data-theme="dark"] .theme-btn .sun { display: block; }
+.theme-btn svg { transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
+.theme-btn:hover svg { transform: rotate(25deg); }
+:root[data-theme="dark"] .entry-shot img { filter: brightness(.9); }
+
+/* hero atmosphere */
+#home { position: relative; overflow: hidden; isolation: isolate; }
+.glow { position: absolute; inset: 0; z-index: -1; pointer-events: none; transform: translate(calc(var(--mx, 0) * 18px), calc(var(--my, 0) * 18px)); transition: transform .8s ease-out; }
+.glow span { position: absolute; border-radius: 50%; filter: blur(70px); }
+.glow span:nth-child(1) { width: 34rem; height: 34rem; left: -9rem; top: -8rem; background: radial-gradient(circle, var(--glow-a), transparent 65%); animation: drift-a 24s ease-in-out infinite alternate; }
+.glow span:nth-child(2) { width: 30rem; height: 30rem; right: -7rem; top: 10rem; background: radial-gradient(circle, var(--glow-b), transparent 65%); animation: drift-b 28s ease-in-out infinite alternate; }
+@keyframes drift-a { to { transform: translate(7rem, 5rem) scale(1.12); } }
+@keyframes drift-b { to { transform: translate(-6rem, -4rem) scale(1.1); } }
+
+/* entrance */
+html.js .navbar { animation: drop-in .8s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes drop-in { from { transform: translateY(-100%); opacity: 0; } }
+.mask { display: block; overflow: hidden; padding: 0 .06em .12em; margin: 0 -.06em -.12em; }
+html.js .mask > span { display: block; transform: translateY(112%); transition: transform 1.1s cubic-bezier(.2, .8, .2, 1); }
+html.js.is-loaded .mask > span { transform: none; }
+html.js.is-loaded h1 .mask:nth-child(2) > span { transition-delay: .14s; }
+.char { display: inline-block; white-space: pre; }
+html.js .char { opacity: 0; transform: translateY(.55em); }
+html.js.is-loaded .char { opacity: 1; transform: none; transition: opacity .6s ease, transform .6s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i, 0) * 18ms + .1s); }
+
+/* scroll reveal */
+.reveal { transition: opacity .85s cubic-bezier(.2, .7, .2, 1), transform .85s cubic-bezier(.2, .7, .2, 1); transition-delay: calc(var(--i, 0) * 70ms); }
+html.js .reveal:not(.is-visible) { opacity: 0; transform: translateY(20px); }
+html.js .badge.reveal:not(.is-visible) { transform: translateY(10px) scale(.94); }
+html.js .draw { transform-origin: left; transition: transform 1s cubic-bezier(.2, .7, .2, 1) .2s; }
+html.js .draw:not(.is-visible) { transform: scaleX(0); }
+.section-head::after { content: ""; display: block; width: 3rem; height: 2px; margin-top: 1rem; background: var(--accent); transform-origin: left; transition: transform .9s cubic-bezier(.2, .7, .2, 1) .3s; }
+html.js .section-head:not(.is-visible)::after { transform: scaleX(0); }
+
+/* micro-interactions */
+.badge { transition: transform .25s ease; }
+.badge:hover { transform: translateY(-2px); }
+.entry, .cred { transition: background .35s ease; }
+.entry:hover, .cred:hover { background: linear-gradient(90deg, var(--hover), transparent 85%); }
+.entry-shot img { transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+.entry:hover .entry-shot img { transform: scale(1.03); }
+.search-panel { animation: panel-in .25s ease; }
+@keyframes panel-in { from { opacity: 0; transform: translateY(-6px); } }
+@keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+@keyframes nudge-up { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.next-arrow { animation: nudge 2.4s ease-in-out infinite; }
+.next[href="#home"] .next-arrow { animation-name: nudge-up; }
+.next:hover .next-arrow, .next:focus-visible .next-arrow { animation: none; }
+
+/* section dots */
+.dots { position: fixed; right: 1.25rem; top: 50%; z-index: 9; display: flex; flex-direction: column; gap: .3rem; transform: translateY(-50%); }
+.dots a { position: relative; display: block; width: 1.5rem; height: 1.5rem; }
+.dots a::before {
+  content: ""; position: absolute; inset: 0; margin: auto; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--muted); opacity: .45; transition: transform .3s ease, background .3s ease, opacity .3s ease;
+}
+.dots a.is-active::before, .dots a:hover::before, .dots a:focus-visible::before { background: var(--accent); opacity: 1; transform: scale(1.6); }
+.dots a::after {
+  content: attr(data-label); position: absolute; right: 100%; top: 50%; padding: .15rem .65rem;
+  font-size: .85rem; letter-spacing: .05em; white-space: nowrap; color: var(--ink);
+  background: var(--panel); border: 1px solid var(--line); border-radius: 4px;
+  opacity: 0; pointer-events: none; transform: translate(6px, -50%); transition: opacity .2s ease, transform .2s ease;
+}
+.dots a:hover::after, .dots a:focus-visible::after { opacity: 1; transform: translate(0, -50%); }
+.dots a:focus-visible { outline: none; }
+@media (max-width: 1280px) { .dots { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .navbar, .glow span, .next-arrow, .search-panel { animation: none; }
+  html.js .mask > span, html.js .char, html.js .reveal:not(.is-visible), html.js .draw:not(.is-visible) { opacity: 1; transform: none; }
+  html.js .section-head:not(.is-visible)::after { transform: none; }
+  .glow { transform: none; }
+}
+
 /* tablets and phones */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; grid-template-areas: "name" "intro" "academic" "thought"; }
@@ -324,7 +548,8 @@ footer p { margin: 0; }
   .nav-links, .header-icons { display: none; flex-basis: 100%; }
   .nav-links { flex-direction: column; gap: 0; padding-bottom: .4rem; }
   .nav-links a { padding: .7rem 0; }
-  .nav-links a::after { right: auto; width: 1.5rem; bottom: .35rem; }
+  .nav-indicator { display: none; }
+  .nav-links a[aria-current] { color: var(--accent); }
   .header-icons { margin: 0; padding: .2rem 0 1rem; gap: .5rem; }
   .nav-toggle:checked ~ .nav-links, .nav-toggle:checked ~ .header-icons { display: flex; }
 }
@@ -339,18 +564,21 @@ footer p { margin: 0; }
 </style>
 </head>
 <body id="top">
- 
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"></div>
+
 <header class="navbar">
   <div class="nav-inner">
-    <a class="brand" href="index.html">Situ Kumar</a>
+    <a class="brand" href="#home">Situ Kumar</a>
     <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true" tabindex="-1">
     <label for="nav-toggle" class="burger" aria-label="Toggle navigation"><span></span></label>
     <nav class="nav-links" aria-label="Main">
-      <a href="index.html" aria-current="page">Home</a>
-      <a href="experience.html">Experience</a>
-      <a href="projects.html">Projects</a>
-      <a href="publication.html">Publication</a>
-      <a href="blog.html">Blog</a>
+      <a href="#home" aria-current="location">Home</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#publication">Publication</a>
+      <a href="#blog">Blog</a>
+      <span class="nav-indicator" aria-hidden="true"></span>
     </nav>
     <div class="header-icons">
       <a href="mailto:kumar.situ.003@outlook.com" aria-label="Email" title="Email"><svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v.3l-10 6.3L2 6.3V6a1 1 0 0 1 1-1zm-1 4.1 10 6.3 10-6.3V18a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/></svg></a>
@@ -358,6 +586,7 @@ footer p { margin: 0; }
       <a href="https://github.com/situ0214" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg></a>
       <a href="https://orcid.org/" target="_blank" rel="noopener noreferrer" aria-label="ORCID" title="ORCID"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM8.1 6.2a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8zM7.3 9h1.6v7.4H7.3zm3 0h2.8c2.4 0 3.8 1.6 3.8 3.7s-1.5 3.7-3.8 3.7h-2.8zm1.6 1.4V15h1.1c1.4 0 2.2-.9 2.2-2.3s-.8-2.3-2.2-2.3z"/></svg></a>
       <a href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar" title="Google Scholar"><svg viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.9V17h2V9zM5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.8z"/></svg></a>
+      <button class="theme-btn" type="button" aria-label="Toggle dark mode" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
       <button class="search-btn" type="button" aria-label="Search" aria-expanded="false" aria-controls="search-panel"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M10 2a8 8 0 1 0 4.9 14.3l5.4 5.4 1.4-1.4-5.4-5.4A8 8 0 0 0 10 2zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12z"/></svg></button>
     </div>
   </div>
@@ -366,12 +595,23 @@ footer p { margin: 0; }
     <ul class="search-results" aria-live="polite"></ul>
   </div>
 </header>
- 
-<main>
+
+<nav class="dots" aria-label="Sections">
+  <a href="#home" data-label="Home" aria-label="Home"></a>
+  <a href="#experience" data-label="Experience" aria-label="Experience"></a>
+  <a href="#projects" data-label="Projects" aria-label="Projects"></a>
+  <a href="#publication" data-label="Publication" aria-label="Publication"></a>
+  <a href="#blog" data-label="Blog" aria-label="Blog"></a>
+</nav>
+
+<main id="main">
+  <section class="band" id="home">
+    <div class="glow" aria-hidden="true"><span></span><span></span></div>
+    <div class="home">
   <section class="hero">
     <div class="hero-name">
       <p class="eyebrow">Welcome to my little space on the internet.</p>
-      <h1>Situ<em>Kumar</em></h1>
+      <h1><span class="mask"><span>Situ</span></span><em class="mask"><span>Kumar</span></em></h1>
 <ul class="skills" aria-label="Skills">
       <li class="badge" style="--c:#3776AB"><span class="k">Lang</span><span class="v">Python</span></li>
       <li class="badge" style="--c:#013243"><span class="k">Data</span><span class="v">NumPy</span></li>
@@ -387,9 +627,9 @@ footer p { margin: 0; }
       <li class="badge" style="--c:#181717"><span class="k">Tool</span><span class="v">GitHub</span></li>
     </ul>
     </div>
- 
+
     <aside class="thought" aria-labelledby="thought-title">
-      <h2 class="side-title" id="thought-title">A Thought to Share?</h2>
+      <h3 class="side-title" id="thought-title">A Thought to Share?</h3>
       <p class="thought-sub">Every perspective adds a new dimension to an idea. What's yours?</p>
       <p class="thought-text">Have a suggestion, a different perspective, or simply an interesting thought? I'd be happy to hear from you.</p>
       <div class="thought-row">
@@ -397,14 +637,14 @@ footer p { margin: 0; }
         <a class="btn" href="mailto:kumar.situ.003@outlook.com?subject=A%20thought%20to%20share">Write to me <span class="arr" aria-hidden="true">&nearr;</span></a>
       </div>
     </aside>
- 
+
     <div class="hero-intro">
       <hr class="divider-line">
       <p>I am an engineering graduate from <a href="https://ggu.ac.in/department/ece" target="_blank" rel="noopener noreferrer">Department of Electronics and Communication Engineering</a> at <a href="https://www.ggu.ac.in/" target="_blank" rel="noopener noreferrer">GGV Bilaspur</a>, with a keen interest in technology, problem-solving, and scientific exploration.</p>
     </div>
- 
+
     <section class="academic" aria-labelledby="academic">
-      <h2 class="side-title" id="academic">Academic Credential</h2>
+      <h3 class="side-title" id="academic">Academic Credential</h3>
       <div class="cred-list">
       <article class="cred">
         <h3 class="cred-head">B-tech - Electronics and Communication Engineering</h3>
@@ -421,13 +661,109 @@ footer p { margin: 0; }
       </div>
     </section>
   </section>
- 
+
   <section class="more" aria-label="More about me">
     <p>I am currently developing my expertise in <a href="#">Machine Learning (ML)</a> and <a href="#">Deep Learning (DL)</a>, with a particular interest in their applications in healthcare. My curiosity about genomics and neuroscience has led me to explore how ML techniques applied to blood-based gene-expression data can help identify patterns associated with the early detection of neurodegenerative diseases. I believe that practical application is fundamental to understanding a concept, and I strive to put this into practice through my explorations.</p>
     <p>With a keen interest in scientific research, I had the opportunity to undertake a summer research internship at the <a href="https://www.iitp.ac.in/" target="_blank" rel="noopener noreferrer">Department of Mathematics and Computing</a>, <a href="https://www.iitp.ac.in/" target="_blank" rel="noopener noreferrer">IIT Patna</a>, where I gained valuable exposure to the research process and academic environment. I am keen to build upon this experience by exploring new research directions, learning from diverse perspectives, and contributing to meaningful research.</p>
   </section>
+
+    <a class="next" href="#experience"><span class="next-label">Next</span><span class="next-name">Experience</span><span class="next-arrow" aria-hidden="true">&darr;</span></a>
+    </div>
+  </section>
+
+  <section class="band band-alt" id="experience" aria-labelledby="experience-title">
+    <div class="page-section">
+      <header class="section-head"><h2 id="experience-title">Experience</h2></header>
+  <section class="group">
+    <h3 class="group-title">Internship</h3>
+    <article class="entry">
+      <div class="entry-meta">
+        <span class="entry-label">Summer Research Internship</span>
+        <span class="entry-date">May&ndash;July 2026</span>
+      </div>
+      <h4 class="entry-title"><a href="https://www.iitp.ac.in/" target="_blank" rel="noopener noreferrer">Department of Mathematics and Computing, IIT Patna <span class="ext" aria-hidden="true">&nearr;</span></a></h4>
+      <p class="entry-text">Worked on research in Lightweight Post-Quantum Cryptography, focusing on the design of an RLWE-based authentication protocol for Smart Grid applications. The internship involved studying post-quantum cryptographic primitives, designing a secure mutual authentication and session key establishment mechanism, analyzing the protocol's security properties, and documenting a lightweight framework for secure communication in quantum-resistant environments.</p>
+      <div class="entry-foot"><a class="btn" href="https://www.linkedin.com/in/situ-kumar-162087325/overlay/Position/2963002456/treasury/?profileId=ACoAAFIPCBoBig5tw5IAjKE6S8jyd5l9KlSJBCw" target="_blank" rel="noopener noreferrer">View certificate <span class="arr" aria-hidden="true">&nearr;</span></a></div>
+    </article>
+  </section>
+
+  <section class="group" id="certification">
+    <h3 class="group-title">Certification</h3>
+    <article class="entry">
+      <div class="entry-meta"><span class="entry-label">Coming soon</span></div>
+      <p class="entry-text">Details will be updated soon.</p>
+      <div class="entry-foot"><a class="btn" href="https://www.linkedin.com/in/situ-kumar-162087325/overlay/Position/2963002456/treasury/?profileId=ACoAAFIPCBoBig5tw5IAjKE6S8jyd5l9KlSJBCw" target="_blank" rel="noopener noreferrer">View certificate <span class="arr" aria-hidden="true">&nearr;</span></a></div>
+    </article>
+  </section>
+
+    <a class="next" href="#projects"><span class="next-label">Next</span><span class="next-name">Projects</span><span class="next-arrow" aria-hidden="true">&darr;</span></a>
+    </div>
+  </section>
+
+  <section class="band" id="projects" aria-labelledby="projects-title">
+    <div class="page-section">
+      <header class="section-head"><h2 id="projects-title">Projects</h2></header>
+
+  <section class="group">
+    <h3 class="group-title">Project</h3>
+    <article class="entry">
+      <figure class="entry-shot">
+        <img src="https://github.com/situ0214/YOLO-Based-Intelligent-Traffic-Signal-Management-System/raw/main/Screenshot%202026-05-04%20215544.png" alt="Dashboard of the traffic signal management system" referrerpolicy="no-referrer" loading="lazy" onerror="this.closest('figure').remove()">
+      </figure>
+      <div class="entry-meta"><span class="entry-label">Smart Traffic Control</span></div>
+      <h4 class="entry-title"><a href="https://github.com/situ0214/YOLO-Based-Intelligent-Traffic-Signal-Management-System" target="_blank" rel="noopener noreferrer">YOLO-Based Intelligent Traffic Signal Management System <span class="ext" aria-hidden="true">&nearr;</span></a></h4>
+      <p class="entry-text">A traffic control system that uses YOLOv8 to detect and count vehicles across four lanes in real time, and adjusts signal timings according to traffic density to reduce congestion and waiting time.</p>
+      <ul class="entry-points">
+        <li><b>Dynamic signals.</b> Green time ranges from 5 to 20 seconds depending on lane density, with a 2-second yellow before each switch.</li>
+        <li><b>Vehicle classification.</b> Cars, buses, trucks and motorcycles are identified from live video feeds.</li>
+        <li><b>Live dashboard.</b> A Tkinter interface shows lane feeds, vehicle counts and congestion status.</li>
+        <li><b>Traffic analysis.</b> Real-time Matplotlib graphs track density trends across the lanes.</li>
+      </ul>
+      <ul class="entry-tags" aria-label="Technologies used">
+        <li>Python</li><li>YOLOv8</li><li>OpenCV</li><li>NumPy</li><li>Tkinter</li><li>Matplotlib</li><li>Pillow</li>
+      </ul>
+      <div class="entry-foot"><a class="btn" href="https://github.com/situ0214/YOLO-Based-Intelligent-Traffic-Signal-Management-System" target="_blank" rel="noopener noreferrer">View on GitHub <span class="arr" aria-hidden="true">&nearr;</span></a></div>
+    </article>
+  </section>
+
+    <a class="next" href="#publication"><span class="next-label">Next</span><span class="next-name">Publication</span><span class="next-arrow" aria-hidden="true">&darr;</span></a>
+    </div>
+  </section>
+
+  <section class="band band-alt" id="publication" aria-labelledby="publication-title">
+    <div class="page-section">
+      <header class="section-head"><h2 id="publication-title">Publications</h2></header>
+  <div class="pub-empty">
+    <p class="pub-empty-label">On the way</p>
+    <p>My publication is on the way. Thank you for your patience and interest, it will be shared here as soon as it is ready.</p>
+  </div>
+
+    <a class="next" href="#blog"><span class="next-label">Next</span><span class="next-name">Blog</span><span class="next-arrow" aria-hidden="true">&darr;</span></a>
+    </div>
+  </section>
+
+  <section class="band" id="blog" aria-labelledby="blog-title">
+    <div class="page-section">
+      <header class="section-head"><h2 id="blog-title">Blog</h2></header>
+
+  <section class="group">
+    <h3 class="group-title">Articles</h3>
+    <article class="entry">
+      <div class="entry-meta">
+        <span class="entry-label">Machine Learning</span>
+        <span class="entry-date">LinkedIn</span>
+      </div>
+      <h4 class="entry-title"><a href="https://www.linkedin.com/pulse/from-neural-networks-molecular-signatures-machine-learning-situ-kumar-xvdif/" target="_blank" rel="noopener noreferrer">From Neural Networks to Molecular Signatures <span class="ext" aria-hidden="true">&nearr;</span></a></h4>
+      <p class="entry-text">Published on LinkedIn.</p>
+      <div class="entry-foot"><a class="btn" href="https://www.linkedin.com/pulse/from-neural-networks-molecular-signatures-machine-learning-situ-kumar-xvdif/" target="_blank" rel="noopener noreferrer">Read on LinkedIn <span class="arr" aria-hidden="true">&nearr;</span></a></div>
+    </article>
+  </section>
+
+    <a class="next" href="#home"><span class="next-label">Back to top</span><span class="next-arrow" aria-hidden="true">&uarr;</span></a>
+    </div>
+  </section>
 </main>
- 
+
 <footer>
   <div class="footer-inner">
     <p>&copy; 2026 Situ Kumar. All rights reserved.</p>
@@ -440,70 +776,64 @@ footer p { margin: 0; }
     </div>
   </div>
 </footer>
- 
+
 <script>
 (function () {
   var pages = [
     {
         "page": "Home",
         "title": "About me",
-        "url": "index.html",
+        "url": "#home",
         "text": "engineering graduate GGV Bilaspur Electronics and Communication Engineering machine learning deep learning healthcare genomics neuroscience gene-expression blood neurodegenerative diseases summer research internship IIT Patna"
     },
     {
         "page": "Home",
         "title": "Skills",
-        "url": "index.html",
+        "url": "#home",
         "text": "Python NumPy Pandas scikit-learn Matplotlib TensorFlow Keras PyTorch OpenCV Jupyter Git GitHub"
     },
     {
         "page": "Home",
         "title": "Academic Credential",
-        "url": "index.html#academic",
+        "url": "#academic",
         "text": "B-tech Electronics and Communication Engineering Guru Ghasidas Vishwavidyalaya Bilaspur Central University 2024-28 High Schooling S.R.P College Patna BSEB Schooling S.T Joseph Academy Biharsharif Nalanda CBSE education"
     },
     {
         "page": "Experience",
         "title": "Summer Research Internship, IIT Patna",
-        "url": "experience.html",
+        "url": "#experience",
         "text": "Department of Mathematics and Computing Lightweight Post-Quantum Cryptography RLWE authentication protocol Smart Grid mutual authentication session key May July 2026 internship"
     },
     {
         "page": "Experience",
         "title": "Certification",
-        "url": "experience.html",
+        "url": "#certification",
         "text": "certificate internship details coming soon"
     },
     {
         "page": "Projects",
         "title": "YOLO-Based Intelligent Traffic Signal Management System",
-        "url": "projects.html",
+        "url": "#projects",
         "text": "YOLOv8 vehicle detection traffic density signal timing OpenCV Tkinter Matplotlib Python GitHub project"
     },
     {
         "page": "Publication",
         "title": "Publications",
-        "url": "publication.html",
+        "url": "#publication",
         "text": "publication research paper on the way"
     },
     {
         "page": "Blog",
         "title": "From Neural Networks to Molecular Signatures",
-        "url": "blog.html",
+        "url": "#blog",
         "text": "article LinkedIn machine learning blog"
-    },
-    {
-        "page": "Archives",
-        "title": "Professor named among world's top 2% scientists",
-        "url": "archives.html",
-        "text": "from the archives felicitation congratulate professor group photograph news"
     }
 ];
   var btn = document.querySelector('.search-btn');
   var panel = document.getElementById('search-panel');
   var input = panel.querySelector('input');
   var list = panel.querySelector('.search-results');
- 
+
   function render(hits, query) {
     list.innerHTML = '';
     if (!query) return;
@@ -528,7 +858,7 @@ footer p { margin: 0; }
       list.appendChild(li);
     });
   }
- 
+
   function search() {
     var query = input.value.trim().toLowerCase();
     var words = query.split(/\s+/).filter(Boolean);
@@ -538,15 +868,16 @@ footer p { margin: 0; }
     }) : [];
     render(hits, query);
   }
- 
+
   function toggle(open) {
     panel.hidden = !open;
     btn.setAttribute('aria-expanded', open);
     if (open) input.focus();
   }
- 
+
   btn.addEventListener('click', function () { toggle(panel.hidden); });
   input.addEventListener('input', search);
+  list.addEventListener('click', function (e) { if (e.target.closest('a')) toggle(false); });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !panel.hidden) { toggle(false); btn.focus(); }
   });
@@ -555,6 +886,152 @@ footer p { margin: 0; }
   });
 })();
 </script>
+<script>
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function (sel, ctx) { return (ctx || document).querySelector(sel); };
+  var $$ = function (sel, ctx) { return [].slice.call((ctx || document).querySelectorAll(sel)); };
+
+  /* theme */
+  var themeBtn = $('.theme-btn');
+  function syncTheme() { themeBtn.setAttribute('aria-pressed', root.getAttribute('data-theme') === 'dark'); }
+  themeBtn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.classList.add('theme-anim');
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    syncTheme();
+    window.setTimeout(function () { root.classList.remove('theme-anim'); }, 650);
+  });
+  syncTheme();
+
+  /* hero line, letter by letter */
+  var eyebrow = $('.eyebrow');
+  if (eyebrow && !reduce) {
+    var line = eyebrow.textContent;
+    eyebrow.textContent = '';
+    var label = document.createElement('span');
+    label.className = 'sr-only';
+    label.textContent = line;
+    eyebrow.appendChild(label);
+    line.split('').forEach(function (ch, i) {
+      var c = document.createElement('span');
+      c.className = 'char';
+      c.setAttribute('aria-hidden', 'true');
+      c.style.setProperty('--i', i);
+      c.textContent = ch;
+      eyebrow.appendChild(c);
+    });
+  }
+  window.requestAnimationFrame(function () { window.requestAnimationFrame(function () { root.classList.add('is-loaded'); }); });
+
+  /* scroll reveal */
+  function tag(selector, cls) {
+    $$(selector).forEach(function (el) {
+      el.classList.add(cls);
+      if (cls === 'reveal') {
+        var n = [].indexOf.call(el.parentNode.children, el);
+        el.style.setProperty('--i', Math.min(n, 9));
+      }
+    });
+  }
+  if (!reduce && 'IntersectionObserver' in window) {
+    ['.skills .badge', '.hero-intro p', '.thought > *', '.academic > h3', '.cred', '.more p',
+     '.group-title', '.entry', '.pub-empty', '.next', '.section-head'].forEach(function (s) { tag(s, 'reveal'); });
+    tag('.divider-line', 'draw');
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var el = e.target;
+        el.classList.add('is-visible');
+        io.unobserve(el);
+        if (el.classList.contains('reveal')) {
+          var wait = 1000 + (parseInt(el.style.getPropertyValue('--i'), 10) || 0) * 70;
+          window.setTimeout(function () { el.classList.remove('reveal'); el.style.removeProperty('--i'); }, wait);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    $$('.reveal, .draw').forEach(function (el) { io.observe(el); });
+  }
+
+  /* header, progress bar, active section */
+  var header = $('.navbar');
+  var progress = $('.progress');
+  var ids = ['home', 'experience', 'projects', 'publication', 'blog'];
+  var links = $$('.nav-links a');
+  var dots = $$('.dots a');
+  var navLinks = $('.nav-links');
+  var indicator = $('.nav-indicator');
+  var menu = $('#nav-toggle');
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  var current = null;
+
+  function placeIndicator(instant) {
+    var a = byId[current];
+    if (!a || !indicator || getComputedStyle(indicator).display === 'none') return;
+    if (instant) indicator.style.transition = 'none';
+    indicator.style.width = a.offsetWidth + 'px';
+    indicator.style.transform = 'translateX(' + a.offsetLeft + 'px)';
+    if (instant) { void indicator.offsetWidth; indicator.style.transition = ''; }
+  }
+
+  function mark(id) {
+    if (id === current) return;
+    var first = current === null;
+    current = id;
+    links.forEach(function (a) { a.removeAttribute('aria-current'); });
+    if (byId[id]) byId[id].setAttribute('aria-current', 'location');
+    dots.forEach(function (d) { d.classList.toggle('is-active', d.getAttribute('href') === '#' + id); });
+    placeIndicator(first);
+  }
+
+  function update() {
+    var y = window.pageYOffset;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    header.classList.toggle('scrolled', y > 8);
+    progress.style.setProperty('--p', max > 0 ? Math.min(1, y / max).toFixed(4) : 0);
+    var line = window.innerHeight * 0.35;
+    var now = ids[0];
+    ids.forEach(function (id) { if (document.getElementById(id).getBoundingClientRect().top <= line) now = id; });
+    mark(now);
+  }
+
+  var waiting = false;
+  window.addEventListener('scroll', function () {
+    if (waiting) return;
+    waiting = true;
+    window.requestAnimationFrame(function () { update(); waiting = false; });
+  }, { passive: true });
+  window.addEventListener('resize', function () { placeIndicator(true); update(); });
+  window.addEventListener('load', function () { placeIndicator(true); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { placeIndicator(true); });
+  update();
+
+  /* mobile menu */
+  menu.addEventListener('change', function () { header.classList.toggle('menu-open', menu.checked); });
+  $$('.brand, .nav-links a').forEach(function (a) {
+    a.addEventListener('click', function () { menu.checked = false; header.classList.remove('menu-open'); });
+  });
+
+  /* pointer effects: drifting glow and magnetic buttons */
+  if (!reduce && window.matchMedia('(hover: hover)').matches) {
+    var glow = $('.glow');
+    window.addEventListener('pointermove', function (e) {
+      glow.style.setProperty('--mx', (e.clientX / window.innerWidth - 0.5).toFixed(3));
+      glow.style.setProperty('--my', (e.clientY / window.innerHeight - 0.5).toFixed(3));
+    }, { passive: true });
+    $$('.btn').forEach(function (b) {
+      b.addEventListener('pointermove', function (e) {
+        var r = b.getBoundingClientRect();
+        b.style.transform = 'translate(' + (((e.clientX - r.left) / r.width - 0.5) * 8).toFixed(1) + 'px,' + (((e.clientY - r.top) / r.height - 0.5) * 6).toFixed(1) + 'px)';
+      });
+      b.addEventListener('pointerleave', function () { b.style.transform = ''; });
+    });
+  }
+})();
+</script>
 </body>
 </html>
- 
